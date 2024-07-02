@@ -8,7 +8,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # note: 11 additional targets are not displayed.
     target_link_libraries(opencvtest2 PRIVATE opencv_ml opencv_dnn opencv_core opencv_flann)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")  
-    # Windows 的情况（你可能需要设置不同的路径或使用其他方式找到头文件）  
+    # Windows 的情况（你可能需要设置不同的路径或使用其他方式找到头文件）
+    # this is heuristically generated, and may not be correct
+    find_package(OpenCV CONFIG REQUIRED)
+    # note: 10 additional targets are not displayed.
+    target_link_libraries(opencvtest2 PRIVATE opencv_ml opencv_dnn opencv_core opencv_flann)
 else()
     # Linux 或其他 Unix-like 系统的情况  
 endif()
