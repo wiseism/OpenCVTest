@@ -1,0 +1,42 @@
+name: cmake build
+
+on:
+  push:
+    branches: [ "cmake" ]
+  pull_request:
+    branches: [ "cmake" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    #runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    #    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: curl
+      run: which curl
+
+    - name: install vcpkg
+      run: |
+        cd ${{github.workspace}}
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        git checkout 2024.03.25
+        ./bootstrap-vcpkg.sh
+        ./vcpkg install opencv
+        cd ${{github.workspace}}
+        echo 'export PATH=$PATH:"$PWD"' >> ~/.bashrc
+        echo 'export VCPKG_ROOT="$PWD"' >> ~/.bashrc
+        source ~/.bashrc
+    - name: install cmake
+      run: |
+        source ~/.bashrc
+        build_dir="build"
+        cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -B build_dir
+        cmake --build build_dir
+        ls -la
+        cd build_dir

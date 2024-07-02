@@ -1,0 +1,41 @@
+name: cmake build win
+
+on:
+  push:
+    branches: [ "cmake" ]
+  pull_request:
+    branches: [ "cmake" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    #runs-on: ubuntu-20.04
+    runs-on: windows-latest
+    #    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: curl
+      run: which curl
+
+    - name: install vcpkg
+      run: |
+        dir -s "C:\Program Files (x86)\Microsoft Visual Studio"
+        dir -s "C:\Program Files\Microsoft Visual Studio"
+        cd ${{github.workspace}}
+        git clone https://github.com/microsoft/vcpkg.git
+        git checkout 2024.03.25
+        cd vcpkg
+        ./bootstrap-vcpkg.bat
+        ./vcpkg install opencv
+        cd ${{github.workspace}}
+    - name: install cmake
+      run: |
+        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64"
+        $build_dir="build"
+        cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -B $build_dir
+        cmake --build $build_dir
+        dir
+        cd $build_dir
