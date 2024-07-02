@@ -10,7 +10,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
-  string s1;//初始化字符串，空字符串
+  string s1;//初始化字符串，空字符串 栈上分配内存
   string s2 = s1; //拷贝初始化，深拷贝字符串
   string s3 = "I am Yasuo"; //直接初始化，s3存了字符串
   string s4(10, 'a'); //s4存的字符串是aaaaaaaaaa

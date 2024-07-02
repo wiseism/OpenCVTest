@@ -355,3 +355,4 @@ MigrationBackup/
 .idea
 OpenCVTest/x64/Debug
 cmake-build-debug/
+build_*/

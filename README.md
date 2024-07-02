@@ -1,5 +1,10 @@
 # OpenCVTest
 
+
+## opencv
+显示图形界面
+
+
 ## cmake
 
 git clone https://github.com/microsoft/vcpkg.git
