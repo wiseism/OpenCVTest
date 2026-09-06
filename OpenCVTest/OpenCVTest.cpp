@@ -1,31 +1,35 @@
-// OpenCVTest.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+// OpenCVTest.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
+// ä»… Windows ä½¿ç”¨é¢„ç¼–è¯‘å¤´ stdafx.hï¼ˆå« Windows SDKï¼‰ï¼ŒLinux ä¸‹è·³è¿‡
+#if defined(_WIN32)
 #include "stdafx.h"
-#include <iostream>  
-#include <opencv2/core/core.hpp>  
-#include <opencv2/highgui/highgui.hpp>  
+#endif
+
+#include <iostream>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
 
 using namespace std;
 using namespace cv;
 
 int main() {
-	string s1;//³õÊ¼»¯×Ö·û´®£¬¿Õ×Ö·û´®
-	string s2 = s1; //¿½±´³õÊ¼»¯£¬Éî¿½±´×Ö·û´®
-	string s3 = "I am Yasuo"; //Ö±½Ó³õÊ¼»¯£¬s3´æÁË×Ö·û´®
-	string s4(10, 'a'); //s4´æµÄ×Ö·û´®ÊÇaaaaaaaaaa
-	string s5(s4); //¿½±´³õÊ¼»¯£¬Éî¿½±´×Ö·û´®
-	string s6("I am Ali"); //Ö±½Ó³õÊ¼»¯
-	string s7 = string(6, 'c'); //¿½±´³õÊ¼»¯£¬cccccc
-	cout<< s7;
-	// ¶ÁÈëÒ»ÕÅÍ¼Æ¬£¨ÓÎÏ·Ô­»­£©    
+	string s1;//åˆå§‹åŒ–å­—ç¬¦ä¸²ï¼Œç©ºå­—ç¬¦ä¸²
+	string s2 = s1; //æ‹·è´åˆå§‹åŒ–ï¼Œæ·±æ‹·è´å­—ç¬¦ä¸²
+	string s3 = "I am Yasuo"; //ç›´æ¥åˆå§‹åŒ–ï¼Œs3å­˜äº†å­—ç¬¦ä¸²
+	string s4(10, 'a'); //s4å­˜çš„å­—ç¬¦ä¸²æ˜¯aaaaaaaaaa
+	string s5(s4); //æ‹·è´åˆå§‹åŒ–ï¼Œæ·±æ‹·è´å­—ç¬¦ä¸²
+	string s6("I am Ali"); //ç›´æ¥åˆå§‹åŒ–
+	string s7 = string(6, 'c'); //æ‹·è´åˆå§‹åŒ–ï¼Œcccccc
+	cout << s7;
+	// è¯»å…¥ä¸€å¼ å›¾ç‰‡ï¼ˆæ¸¸æˆåŸç”»ï¼‰
 	Mat img = imread("D:\\visual studio 2015\\Projects\\OpenCVTest\\1.jpg");
-	// ´´½¨Ò»¸öÃûÎª "ÓÎÏ·Ô­»­"´°¿Ú    
-	namedWindow("ÓÎÏ·Ô­»­");
-	// ÔÚ´°¿ÚÖĞÏÔÊ¾ÓÎÏ·Ô­»­    
-	imshow("ÓÎÏ·Ô­»­", img);
-	// µÈ´ı6000 msºó´°¿Ú×Ô¶¯¹Ø±Õ    
+	// åˆ›å»ºä¸€ä¸ªåä¸º "æ¸¸æˆåŸç”»"çª—å£
+	namedWindow("æ¸¸æˆåŸç”»");
+	// åœ¨çª—å£ä¸­æ˜¾ç¤ºæ¸¸æˆåŸç”»
+	imshow("æ¸¸æˆåŸç”»", img);
+	// ç­‰å¾…6000 msåçª—å£è‡ªåŠ¨å…³é—­
 	waitKey(6000);
 	return 0;
 }
-

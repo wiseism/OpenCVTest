@@ -1,0 +1,65 @@
+# 在 Windows 上用 MSBuild 编译 Visual Studio 解决方案 OpenCVTest.sln。
+# OpenCVTest.vcxproj 硬编码了 D:\opencv\build 的头文件/库路径，
+# 因此先把 OpenCV 3.2.0 装到 D:\opencv 以匹配工程配置。
+name: Windows .sln Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  OPENCV_DIR: D:\opencv
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Cache OpenCV 3.2.0
+        id: cache-opencv
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.OPENCV_DIR }}
+          key: opencv-3.2.0-vc14
+
+      - name: Install OpenCV 3.2.0
+        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          $exe = Join-Path $env:RUNNER_TEMP 'opencv-3.2.0-vc14.exe'
+          $url = 'https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-vc14.exe'
+          Write-Host "Downloading $url"
+          Invoke-WebRequest -Uri $url -OutFile $exe
+
+          $7z = 'C:\Program Files\7-Zip\7z.exe'
+          if (-not (Test-Path $7z)) { throw "7-Zip not found at $7z" }
+          $dest = Join-Path $env:RUNNER_TEMP 'opencv-extract'
+          & $7z x $exe "-o$dest" -y | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "7-Zip extract failed with code $LASTEXITCODE" }
+
+          # 自解压包内部顶层目录是 opencv/，移动后形成 D:\opencv\build\...
+          Move-Item -Path (Join-Path $dest 'opencv') -Destination $env:OPENCV_DIR
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build solution (Debug x64)
+        run: msbuild OpenCVTest.sln -m -p:Configuration=Debug -p:Platform=x64 -v:minimal
+
+      - name: Build solution (Release x64)
+        run: msbuild OpenCVTest.sln -m -p:Configuration=Release -p:Platform=x64 -v:minimal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenCVTest-x64
+          path: |
+            x64/Debug/*
+            x64/Release/*
+          if-no-files-found: warn

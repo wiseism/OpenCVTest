@@ -352,3 +352,4 @@ healthchecksdb
 MigrationBackup/
 .idea
 OpenCVTest/x64/Debug
+.codebuddy
