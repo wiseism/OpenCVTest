@@ -21,8 +21,25 @@ int main() {
 	string s6("I am Ali"); //直接初始化
 	string s7 = string(6, 'c'); //拷贝初始化，cccccc
 	cout << s7;
-	// 读入一张图片（游戏原画）
-	Mat img = imread("D:\\visual studio 2015\\Projects\\OpenCVTest\\1.jpg");
+	// 读入一张图片（游戏原画，位于本仓库根目录的 1.jpg）
+	// 程序的工作目录随运行方式而变（IDE 调试=工程目录、命令行=仓库根、双击 exe=产物目录），
+	// 因此依次尝试几个常见位置，避免硬编码绝对路径：
+	//   "./1.jpg"      —— 在仓库根目录运行（如命令行 OpenCVTest\1.jpg 所在目录）
+	//   "../1.jpg"     —— VS 调试时工作目录为工程目录 OpenCVTest\
+	//   "../../1.jpg"  —— 双击运行，工作目录为 x64\Debug 等产物目录
+	Mat img;
+	const char* imageCandidates[] = { "1.jpg", "../1.jpg", "../../1.jpg" };
+	for (const char* path : imageCandidates) {
+		img = imread(path);
+		if (!img.empty()) {
+			cout << "Loaded image: " << path << endl;
+			break;
+		}
+	}
+	if (img.empty()) {
+		cerr << "Failed to load 1.jpg (tried: 1.jpg, ../1.jpg, ../../1.jpg)" << endl;
+		return 1;
+	}
 	// 创建一个名为 "游戏原画"窗口
 	namedWindow("游戏原画");
 	// 在窗口中显示游戏原画
