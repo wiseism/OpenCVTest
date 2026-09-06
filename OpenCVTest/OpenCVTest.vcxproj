@@ -69,22 +69,28 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <!-- OpenCV 安装根目录：默认 D:\opencv（匹配 OpenCVTest.sln 同级 workflow），
+       本地如装在别处可用 msbuild /p:OpenCVRoot=<根目录> 覆盖 -->
+  <PropertyGroup Label="OpenCV">
+    <OpenCVRoot Condition="'$(OpenCVRoot)'==''">D:\opencv</OpenCVRoot>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\opencv\build\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);D:\opencv\build\include\opencv;D:\opencv\build\include\opencv2</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;D:\opencv\build\x64\vc14\lib;</LibraryPath>
+    <IncludePath>$(OpenCVRoot)\build\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(OpenCVRoot)\build\include\opencv;$(OpenCVRoot)\build\include\opencv2</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(OpenCVRoot)\build\x64\vc14\lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\opencv\build\include;D:\opencv\build\include\opencv;D:\opencv\build\include\opencv2;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\opencv\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OpenCVRoot)\build\include;$(OpenCVRoot)\build\include\opencv;$(OpenCVRoot)\build\include\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OpenCVRoot)\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(OpenCVRoot)\build\include;$(OpenCVRoot)\build\include\opencv;$(OpenCVRoot)\build\include\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OpenCVRoot)\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,6 +152,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opencv_world320.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

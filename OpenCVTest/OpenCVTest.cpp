@@ -1,10 +1,8 @@
 // OpenCVTest.cpp : 定义控制台应用程序的入口点。
 //
 
-// 仅 Windows 使用预编译头 stdafx.h（含 Windows SDK），Linux 下跳过
-#if defined(_WIN32)
+// 预编译头（MSVC /Yu 要求其必须是首条指令；stdafx.h 内部已做 Windows/Linux 判断）
 #include "stdafx.h"
-#endif
 
 #include <iostream>
 #include <opencv2/core.hpp>
