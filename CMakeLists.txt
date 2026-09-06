@@ -66,3 +66,19 @@ endif()
 target_link_libraries(OpenCVTest PRIVATE ${OpenCV_LIBS})
 
 enable_testing()
+
+# ---------------------------------------------------------------------------
+# OpenCV 示例程序（详细设计见 docs/opencv-examples.md）：
+# examples/ 下每个 .cpp 编译为独立可执行文件，并注册到 CTest 便于回归。
+# ---------------------------------------------------------------------------
+file(GLOB _opencv_examples CONFIGURE_DEPENDS
+     "${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp")
+foreach(_exe_src ${_opencv_examples})
+    get_filename_component(_exe_name "${_exe_src}" NAME_WE)
+    add_executable(${_exe_name} "${_exe_src}")
+    if(OpenCV_INCLUDE_DIRS)
+        target_include_directories(${_exe_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
+    endif()
+    target_link_libraries(${_exe_name} PRIVATE ${OpenCV_LIBS})
+    add_test(NAME ${_exe_name} COMMAND $<TARGET_FILE:${_exe_name}>)
+endforeach()
