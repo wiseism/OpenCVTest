@@ -11,31 +11,18 @@ env:
 
 jobs:
   build:
-    #runs-on: ubuntu-20.04
     runs-on: windows-latest
-    #    runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v3
-    - name: curl
-      run: which curl
+    - uses: actions/checkout@v4
 
-    - name: install vcpkg
+    # vcpkg 2024.03.25 的 msys2 pkgconf 镜像已 404, 改用最新 vcpkg HEAD
+    - name: install opencv (vcpkg latest)
       run: |
-        dir -s "C:\Program Files (x86)\Microsoft Visual Studio"
-        dir -s "C:\Program Files\Microsoft Visual Studio"
-        cd ${{github.workspace}}
-        git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        git checkout 2024.03.25
-        ./bootstrap-vcpkg.bat
-        ./vcpkg install opencv
-        cd ${{github.workspace}}
-    - name: install cmake
+        git clone https://github.com/microsoft/vcpkg.git $env:RUNNER_TEMP/vcpkg
+        & $env:RUNNER_TEMP/vcpkg/bootstrap-vcpkg.bat
+        & $env:RUNNER_TEMP/vcpkg/vcpkg install opencv:x64-windows
+    - name: Configure & Build
       run: |
-        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64"
-        $build_dir="build"
-        cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -B $build_dir
-        cmake --build $build_dir
-        dir
-        cd $build_dir
+        cmake -DCMAKE_TOOLCHAIN_FILE=$env:RUNNER_TEMP/vcpkg/scripts/buildsystems/vcpkg.cmake -B build
+        cmake --build build --config ${{env.BUILD_TYPE}}
