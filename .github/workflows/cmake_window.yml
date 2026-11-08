@@ -26,8 +26,8 @@ jobs:
         dir -s "C:\Program Files\Microsoft Visual Studio"
         cd ${{github.workspace}}
         git clone https://github.com/microsoft/vcpkg.git
-        git checkout 2024.03.25
         cd vcpkg
+        git checkout 2024.03.25
         ./bootstrap-vcpkg.bat
         ./vcpkg install opencv
         cd ${{github.workspace}}
