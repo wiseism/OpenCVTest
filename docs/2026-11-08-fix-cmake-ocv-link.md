@@ -38,3 +38,7 @@ error: pathspec '2024.03.25' did not match any file(s)
 | run id | 结果 |
 | --- | --- |
 | 本次推送触发 | 待填 |
+
+### 复核
+- 42443446245 (vcpkg apt 22.04+pin): expat 下载再失败 → at-spi2-core/meson 失败。vcpkg 2024.03.25 与新环境 arc 不稳。
+- 改 apt libopencv-dev 后 run 42479107385 ✅ success。
