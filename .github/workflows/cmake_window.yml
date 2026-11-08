@@ -23,6 +23,8 @@ jobs:
         & $env:RUNNER_TEMP/vcpkg/bootstrap-vcpkg.bat
         & $env:RUNNER_TEMP/vcpkg/vcpkg install opencv:x64-windows
     - name: Configure & Build
+      shell: pwsh
       run: |
-        cmake -DCMAKE_TOOLCHAIN_FILE=$env:RUNNER_TEMP/vcpkg/scripts/buildsystems/vcpkg.cmake -B build
+        $env:VCPKG_ROOT = "$env:RUNNER_TEMP\vcpkg"
+        cmake -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake" -B build
         cmake --build build --config ${{env.BUILD_TYPE}}
