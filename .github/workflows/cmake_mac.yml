@@ -1,6 +1,7 @@
 name: cmake build mac
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "cmake" ]
   pull_request:
