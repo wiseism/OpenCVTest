@@ -47,3 +47,10 @@ error: pathspec '2024.03.25' did not match any file(s)
 - 42479107364: win vcpkg 2024.03.25 msys2 pkgconf 镜像 404 → 改最新 vcpkg HEAD + pwsh VCPKG_ROOT 修正后 42484484781 ✅ success。
 - 42484484796 ubuntu ✅ success (apt libopencv-dev)。
 - mac run 长期 queued 实为 macos-12 runner 已退役(见 2026-11-12 文档), 已改 macos-latest。
+
+## 最终复核（2026-11-13，三平台全绿）
+| workflow | run | 结果 |
+|---|---|---|
+| cmake build (ubuntu, apt libopencv-dev) | 43470833117 | ✅ success |
+| cmake build mac (brew opencv) | 43470833147 | ✅ success |
+| cmake build win (vcpkg latest HEAD) | 43470832990 | ✅ success |
