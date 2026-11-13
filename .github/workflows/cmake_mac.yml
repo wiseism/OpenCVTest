@@ -15,27 +15,14 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: curl(vcpkg requries)
-      run: which curl
+    - uses: actions/checkout@v4
 
-    - name: install vcpkg
+    - name: install opencv
       run: |
-        cd ${{github.workspace}}
-        git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        git checkout 2024.03.25
-        ./bootstrap-vcpkg.sh
-        ./vcpkg install opencv
-        cd ${{github.workspace}}
-        echo 'export PATH=$PATH:"$PWD"' >> ~/.bashrc
-        echo 'export VCPKG_ROOT="$PWD"' >> ~/.bashrc
-        source ~/.bashrc
-    - name: install cmake
+        for i in 1 2 3; do brew update-reset >/dev/null 2>&1; brew install opencv && break || sleep 15; done
+
+    - name: configure and build
       run: |
-        source ~/.bashrc
-        build_dir="build"
-        cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -B build_dir
-        cmake --build build_dir
-        ls -la
-        cd build_dir
+        cmake -B build_dir -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+          -DOpenCV_DIR="$(brew --prefix opencv)/lib/cmake/opencv4"
+        cmake --build build_dir --config ${{env.BUILD_TYPE}}
