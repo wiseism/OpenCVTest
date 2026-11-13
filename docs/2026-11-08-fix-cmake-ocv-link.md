@@ -37,7 +37,7 @@ error: pathspec '2024.03.25' did not match any file(s)
 ## 验证
 | run id | 结果 |
 | --- | --- |
-| 本次推送触发 | 待填 |
+| 42479107385 (ubuntu) / 42484484781 (win) | ✅ success |
 
 ### 复核
 - 42443446245 (vcpkg apt 22.04+pin): expat 下载再失败 → at-spi2-core/meson 失败。vcpkg 2024.03.25 与新环境 arc 不稳。
@@ -46,4 +46,4 @@ error: pathspec '2024.03.25' did not match any file(s)
 ### 复核2(win 更新 vcpkg HEAD)
 - 42479107364: win vcpkg 2024.03.25 msys2 pkgconf 镜像 404 → 改最新 vcpkg HEAD + pwsh VCPKG_ROOT 修正后 42484484781 ✅ success。
 - 42484484796 ubuntu ✅ success (apt libopencv-dev)。
-- mac run 长期 queued (账户 billing 拦截), 按约定不再等待其结果。
+- mac run 长期 queued 实为 macos-12 runner 已退役(见 2026-11-12 文档), 已改 macos-latest。
